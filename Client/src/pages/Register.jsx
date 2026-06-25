@@ -7,6 +7,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -30,6 +31,9 @@ function Register() {
       console.log(error);
 
       toast.error("Registration Failed");
+    } finally {
+      setLoading(false);
+
     }
   };
 
@@ -82,12 +86,7 @@ function Register() {
                   required
                 />
 
-                <button
-                  type="submit"
-                  className="btn btn-success w-100"
-                >
-                  Register
-                </button>
+                <button type="submit" className="btn btn-success w-100" disabled={loading} > {loading ? "Creating Account..." : "Register"} </button>
 
               </form>
 

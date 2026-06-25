@@ -6,6 +6,7 @@ import api from "../services/api";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,6 +34,9 @@ function Login() {
       console.log(error);
 
       toast.error("Invalid Email or Password");
+    } finally {
+      setLoading(false);
+
     }
   };
 
@@ -74,12 +78,7 @@ function Login() {
                   required
                 />
 
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100"
-                >
-                  Login
-                </button>
+                <button type="submit" className="btn btn-primary w-100" disabled={loading} > {loading ? "Logging In..." : "Login"} </button>
 
               </form>
 
