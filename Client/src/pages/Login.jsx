@@ -13,16 +13,15 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const res = await api.post("/auth/login", {
         email,
         password,
       });
 
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
+      localStorage.setItem("token", res.data.token);
 
       toast.success("Login Successful");
 
@@ -33,10 +32,11 @@ function Login() {
     } catch (error) {
       console.log(error);
 
-      toast.error("Invalid Email or Password");
+      toast.error(
+        error.response?.data?.message || "Login failed"
+      );
     } finally {
       setLoading(false);
-
     }
   };
 

@@ -14,6 +14,8 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    setLoading(true); // <-- ADD THIS
+
     try {
       await api.post("/auth/register", {
         name,
@@ -30,10 +32,11 @@ function Register() {
     } catch (error) {
       console.log(error);
 
-      toast.error("Registration Failed");
+      toast.error(
+        error.response?.data?.message || "Registration Failed"
+      );
     } finally {
       setLoading(false);
-
     }
   };
 
