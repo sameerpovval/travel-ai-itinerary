@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/uploadMiddleware");
 const extractPdfText = require("../services/pdfService");
+const protect = require("../middleware/authMiddleware");
 
 
 const {
@@ -12,11 +13,12 @@ const {
 
 router.post(
     "/upload",
+    protect,
     upload.single("document"),
     uploadAndGenerate
 );
 
-router.post("/generate", createItinerary);
-router.get("/history", getItineraries);
+router.post("/generate",protect, createItinerary);
+router.get("/history",protect, getItineraries);
 
 module.exports = router;
