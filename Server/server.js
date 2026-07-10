@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const itineraryRoutes = require("./routes/itineraryRoutes");
+const chatRoutes = require('./routes/chatRoutes')
 
 connectDB();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/itinerary", itineraryRoutes);
+app.use("/api/chat",chatRoutes)
 
 
 

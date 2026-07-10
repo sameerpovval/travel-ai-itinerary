@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  background: #f5f7fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.main-content {
+  transition: 0.3s;
+  min-height: 100vh;
+}
+
+.content-area {
+  padding: 30px;
+}

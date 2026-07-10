@@ -9,6 +9,9 @@ const {
     createItinerary,
     getItineraries,
     uploadAndGenerate,
+    deleteItinerary,
+    getSingleItinerary,
+    renameItinerary,
 } = require("../controllers/itineraryController");
 
 router.post(
@@ -18,7 +21,11 @@ router.post(
     uploadAndGenerate
 );
 
-router.post("/generate",protect, createItinerary);
-router.get("/history",protect, getItineraries);
+router.post("/generate", protect, createItinerary);
+router.get("/history", protect, getItineraries);
+router.get("/:id", protect, getSingleItinerary);
+router.patch("/:id", protect, renameItinerary);
+router.delete("/:id", protect, deleteItinerary);
+
 
 module.exports = router;

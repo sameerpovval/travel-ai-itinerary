@@ -2,15 +2,23 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import "../styles/upload.css";
+import UploadCard from "../components/UploadCard"
+import ItineraryCard from "../components/ItitneraryCard"
+import AIChat from "../components/AiChat"
+import { useNavigate } from "react-router-dom";
+
 
 function Upload() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [itinerary, setItinerary] = useState("");
+
+  const navigate = useNavigate();
+
 
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a file");
+      toast.error("Please select a file");
       return;
     }
 
@@ -20,101 +28,30 @@ function Upload() {
       const formData = new FormData();
       formData.append("document", file);
 
-      const res = await api.post(
-        "/itinerary/upload",
-        formData
-      );
+      const res = await api.post("/itinerary/upload", formData);
+      toast.success("Itinerary Generated!");
 
-      setItinerary(res.data.itinerary);
+      navigate(`/itinerary/${res.data._id}`);
 
-      setLoading(false);
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      toast.error("Failed to generate itinerary");
+    } finally {
       setLoading(false);
     }
   };
 
-  const copyItinerary = async () => {
-    try {
-      await navigator.clipboard.writeText(itinerary);
-      toast.success("Itinerary copied!");
-    } catch (error) {
-      toast.error("Copy failed");
-    }
-  };
-
-  const shareWhatsApp = () => {
-    const url =
-      "https://wa.me/?text=" +
-      encodeURIComponent(itinerary);
-
-    window.open(url, "_blank");
-  };
-
+ 
   return (
     <Layout>
-      <div className="card shadow-sm">
-        <div className="card-body">
 
-          <h3 className="mb-3">
-            Upload Travel Document
-          </h3>
+      <UploadCard
+        file={file}
+        setFile={setFile}
+        handleUpload={handleUpload}
+        loading={loading}
+      />
 
-          <input
-            type="file"
-            className="form-control mb-3"
-            onChange={(e) =>
-              setFile(e.target.files[0])
-            }
-          />
-
-          <button
-            className="btn btn-primary"
-            onClick={handleUpload}
-          >
-            {loading
-              ? "Generating..."
-              : "Generate Itinerary"}
-          </button>
-
-        </div>
-      </div>
-
-      {itinerary && (
-        <div className="card shadow-sm mt-4">
-          <div className="card-body">
-
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4>Generated Itinerary</h4>
-
-              <div>
-                <button
-                  className="btn btn-success me-2"
-                  onClick={copyItinerary}
-                >
-                  Copy
-                </button>
-
-                <button
-                  className="btn btn-success"
-                  onClick={shareWhatsApp}
-                >
-                  WhatsApp
-                </button>
-              </div>
-            </div>
-
-            <pre
-              style={{
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {itinerary}
-            </pre>
-
-          </div>
-        </div>
-      )}
     </Layout>
   );
 }

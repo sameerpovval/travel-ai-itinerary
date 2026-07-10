@@ -1,0 +1,46 @@
+.upload-card{
+    border:none;
+    border-radius:18px;
+}
+
+.generate-btn{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.chat-card{
+    border:none;
+    border-radius:18px;
+}
+
+.chat-box{
+    height:420px;
+    overflow-y:auto;
+}
+
+.user-msg{
+    background:#2563eb;
+    color:white;
+    padding:12px;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+
+.ai-msg{
+    background:#eef2ff;
+    padding:12px;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+
+.itinerary-card{
+    border:none;
+    border-radius:18px;
+}
+
+.itinerary-box{
+    max-height:600px;
+    overflow-y:auto;
+}

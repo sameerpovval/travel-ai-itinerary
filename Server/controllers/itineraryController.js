@@ -1,5 +1,5 @@
 const Itinerary = require("../models/Itinerary");
-const generateItinerary = require("../services/groqService");
+const { generateItinerary, askTravelAssistant, } = require("../services/groqService");
 const extractPdfText = require("../services/pdfService");
 const extractImageText = require("../services/extractImageText");
 
@@ -11,6 +11,7 @@ const createItinerary = async (req, res) => {
 
         const savedItinerary = await Itinerary.create({
             user: req.user._id,
+            title: "Travel Itinerary",
             travelData,
             itinerary,
         });
@@ -65,7 +66,8 @@ const uploadAndGenerate = async (req, res) => {
 
         const savedItinerary = await Itinerary.create({
             user: req.user._id,
-            travelData: extractedText,
+            title: "Travel Itinerary",
+            travelData,
             itinerary,
         });
 
@@ -78,8 +80,98 @@ const uploadAndGenerate = async (req, res) => {
     }
 };
 
+const getSingleItinerary = async (req, res) => {
+    try {
+
+        const itinerary = await Itinerary.findOne({
+            _id: req.params.id,
+            user: req.user._id,
+        });
+
+        if (!itinerary) {
+            return res.status(404).json({
+                message: "Itinerary not found",
+            });
+        }
+
+        res.status(200).json(itinerary);
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};
+
+const renameItinerary = async (req, res) => {
+
+    try {
+
+        const { title } = req.body;
+
+        const itinerary = await Itinerary.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                user: req.user._id,
+            },
+            {
+                title,
+            },
+            {
+                new: true,
+            }
+        );
+
+        if (!itinerary) {
+            return res.status(404).json({
+                message: "Itinerary not found",
+            });
+        }
+
+        res.json(itinerary);
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+
+};
+
+const deleteItinerary = async (req, res) => {
+    try {
+
+        const itinerary = await Itinerary.findOne({
+            _id: req.params.id,
+            user: req.user._id,
+        });
+
+        if (!itinerary) {
+            return res.status(404).json({
+                message: "Itinerary not found",
+            });
+        }
+
+        await itinerary.deleteOne();
+
+        res.status(200).json({
+            message: "Itinerary deleted successfully",
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createItinerary,
     getItineraries,
     uploadAndGenerate,
+    deleteItinerary,
+    getSingleItinerary,
+    renameItinerary,
 };

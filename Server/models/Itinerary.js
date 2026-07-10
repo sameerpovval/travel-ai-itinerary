@@ -6,14 +6,33 @@ const itinerarySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    
+    title: {
+      type: String,
+      default: "Travel Itinerary",
+    },
+
     travelData: {
       type: String,
       required: true,
     },
+
     itinerary: {
       type: String,
       required: true,
     },
+
+    messages: [
+      {
+        role: {
+          type: String,
+          enum: ["user", "assistant"],
+        },
+        text: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
