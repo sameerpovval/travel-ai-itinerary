@@ -1,19 +1,37 @@
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaUserCircle } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
+
+const pageTitles = {
+  "/dashboard": "Dashboard",
+  "/upload": "Upload Document",
+  "/history": "Trip History",
+};
 
 function Navbar({ setIsOpen, isOpen }) {
-  return (
-    <nav
-      className="navbar bg-white shadow-sm px-4"
-    >
-      <button
-        className="btn btn-outline-dark me-3"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <FaBars />
-      </button>
+  const location = useLocation();
+  const title = pageTitles[location.pathname] || "Travel AI";
 
-      <span className="navbar-brand mb-0">
-        ✈ Travel AI      </span>
+  return (
+    <nav className="app-navbar">
+
+      <div className="d-flex align-items-center gap-3">
+
+        <button
+          className="navbar-toggle"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle sidebar"
+        >
+          <FaBars />
+        </button>
+
+        <span className="navbar-page-title">{title}</span>
+
+      </div>
+
+      <div className="navbar-user">
+        <FaUserCircle size={28} />
+      </div>
+
     </nav>
   );
 }

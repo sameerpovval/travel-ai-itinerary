@@ -6,7 +6,7 @@ const itinerarySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    
+
     title: {
       type: String,
       default: "Travel Itinerary",
@@ -20,6 +20,11 @@ const itinerarySchema = new mongoose.Schema(
     itinerary: {
       type: String,
       required: true,
+    },
+
+    budget: {
+      type: String,
+      default: "",
     },
 
     messages: [

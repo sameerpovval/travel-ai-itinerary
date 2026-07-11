@@ -4,6 +4,8 @@ const extractPdfText = require("../services/pdfService");
 const extractImageText = require("../services/extractImageText");
 
 const createItinerary = async (req, res) => {
+    console.log(req.data, "..")
+
     try {
         const { travelData } = req.body;
 
@@ -43,6 +45,7 @@ const getItineraries = async (req, res) => {
 };
 
 const uploadAndGenerate = async (req, res) => {
+
     try {
         let extractedText = "";
 
@@ -56,24 +59,28 @@ const uploadAndGenerate = async (req, res) => {
         ) {
             extractedText = await extractImageText(req.file.path);
 
+
         } else {
             return res.status(400).json({
                 message: "Unsupported file type",
             });
         }
 
+
         const itinerary = await generateItinerary(extractedText);
 
         const savedItinerary = await Itinerary.create({
             user: req.user._id,
             title: "Travel Itinerary",
-            travelData,
+            travelData: extractedText,
             itinerary,
         });
 
         res.status(201).json(savedItinerary);
 
     } catch (error) {
+
+        console.error(error);
         res.status(500).json({
             message: error.message,
         });

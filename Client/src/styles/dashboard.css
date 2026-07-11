@@ -1,0 +1,40 @@
+.dashboard-card{
+    transition: all .3s ease;
+    cursor:pointer;
+}
+
+.dashboard-card:hover{
+    transform: translateY(-8px);
+    box-shadow:0 15px 35px rgba(0,0,0,.15)!important;
+}
+
+.recent-card{
+    transition:.3s;
+}
+
+.recent-card:hover{
+    transform:translateX(8px);
+    box-shadow:0 10px 25px rgba(0,0,0,.12)!important;
+}
+
+.icon-circle{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:24px;
+}
+
+.showmoreLink{
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.showmoreLink:hover{
+    color:white;
+    padding: 5px;
+}

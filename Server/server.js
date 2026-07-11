@@ -6,6 +6,8 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const itineraryRoutes = require("./routes/itineraryRoutes");
 const chatRoutes = require('./routes/chatRoutes')
+const placeRoutes = require('./routes/placeRoutes')
+const budgetRoutes = require('./routes/budgetRoutes')
 
 connectDB();
 
@@ -21,6 +23,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/itinerary", itineraryRoutes);
 app.use("/api/chat",chatRoutes)
+app.use('/api/places',placeRoutes)
+app.use('/api/budget',budgetRoutes)
 
 
 
