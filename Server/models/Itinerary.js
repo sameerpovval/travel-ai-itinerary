@@ -22,6 +22,11 @@ const itinerarySchema = new mongoose.Schema(
       required: true,
     },
 
+    places: {
+      type: [String],
+      default: [],
+    },
+
     budget: {
       type: String,
       default: "",

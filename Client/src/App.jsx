@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
 import History from "./pages/History";
 import SingleItinerary from "./pages/SingleItinerary";
+import Profile from './pages/Profile'
 
 import ProtectedRoute from "./components/ProtectRoute";
 
@@ -52,6 +53,16 @@ function App() {
             <ProtectedRoute>
               <SingleItinerary />
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+
           }
         />
 

@@ -1,13 +1,9 @@
 const Itinerary = require("../models/Itinerary");
 
-const {
-    extractPlaces,
-} = require("../services/groqService");
-
 const getPlaces = async (req, res) => {
 
     try {
-        
+
         const itinerary = await Itinerary.findOne({
             _id: req.params.id,
             user: req.user._id,
@@ -19,16 +15,10 @@ const getPlaces = async (req, res) => {
             });
         }
 
-
-        const places = await extractPlaces(
-            itinerary.itinerary
-        );
-
-        res.json(places);
+        res.json(itinerary.places);
 
     } catch (error) {
 
-        console.log("ERROR:");
         console.log(error);
 
         res.status(500).json({

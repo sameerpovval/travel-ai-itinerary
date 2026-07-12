@@ -1,9 +1,5 @@
 const Itinerary = require("../models/Itinerary");
 
-const {
-    estimateBudget,
-} = require("../services/groqService");
-
 const generateBudget = async (req, res) => {
 
     try {
@@ -18,23 +14,8 @@ const generateBudget = async (req, res) => {
             });
         }
 
-        // Already generated?
-        if (trip.budget) {
-            return res.status(200).json({
-                budget: trip.budget,
-            });
-        }
-
-        const budget = await estimateBudget(
-            trip.itinerary
-        );
-
-        trip.budget = budget;
-
-        await trip.save();
-
         res.status(200).json({
-            budget,
+            budget: trip.budget,
         });
 
     } catch (error) {

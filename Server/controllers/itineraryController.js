@@ -1,5 +1,5 @@
 const Itinerary = require("../models/Itinerary");
-const { generateItinerary, askTravelAssistant, } = require("../services/groqService");
+const { generateItinerary, askTravelAssistant, extractPlaces,estimateBudget, } = require("../services/groqService");
 const extractPdfText = require("../services/pdfService");
 const extractImageText = require("../services/extractImageText");
 
@@ -69,11 +69,17 @@ const uploadAndGenerate = async (req, res) => {
 
         const itinerary = await generateItinerary(extractedText);
 
+        const places = await extractPlaces(itinerary);
+
+        const budget = await estimateBudget(itinerary);
+
         const savedItinerary = await Itinerary.create({
             user: req.user._id,
             title: "Travel Itinerary",
             travelData: extractedText,
             itinerary,
+            places,
+            budget,
         });
 
         res.status(201).json(savedItinerary);

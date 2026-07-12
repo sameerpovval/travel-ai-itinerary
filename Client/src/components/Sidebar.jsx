@@ -55,16 +55,7 @@ function Sidebar({ isOpen, closeSidebar }) {
         })}
       </div>
 
-      <div className="sidebar-footer">
-        <button
-          onClick={handleLogout}
-          className="sidebar-logout"
-          title={!isOpen ? "Logout" : undefined}
-        >
-          <FaSignOutAlt />
-          {isOpen && <span>Logout</span>}
-        </button>
-      </div>
+     
 
     </div>
   );
