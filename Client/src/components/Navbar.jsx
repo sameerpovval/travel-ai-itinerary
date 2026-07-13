@@ -85,7 +85,7 @@ function Navbar({ setIsOpen, isOpen }) {
         >
           {user?.profileImage ? (
             <img
-              src={`http://localhost:5000/${user.profileImage}`}
+              src={`https://travel-ai-itinerary-lnit.onrender.com/${user.profileImage}`}
               alt=""
               className="navbar-avatar-img"
             />
@@ -101,7 +101,7 @@ function Navbar({ setIsOpen, isOpen }) {
 
               {user?.profileImage ? (
                 <img
-                  src={`http://localhost:5000/${user.profileImage}`}
+                  src={`https://travel-ai-itinerary-lnit.onrender.com/${user.profileImage}`}
                   alt=""
                   className="dropdown-avatar-img"
                 />
