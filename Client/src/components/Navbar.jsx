@@ -1,6 +1,5 @@
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   FaBars,
   FaUserCircle,
@@ -20,13 +19,23 @@ function Navbar({ setIsOpen, isOpen }) {
   const location = useLocation();
   const title = pageTitles[location.pathname] || "Travel AI";
   const [showProfile, setShowProfile] = useState(false);
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem("user"))
+  );
 
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  // Re-read user from localStorage whenever Profile page updates it
+  useEffect(() => {
+    const handleUserUpdated = () => {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    };
+
+    window.addEventListener("userUpdated", handleUserUpdated);
+    return () => window.removeEventListener("userUpdated", handleUserUpdated);
+  }, []);
 
   const handleLogout = async () => {
-
     const result = await Swal.fire({
       title: "Logout?",
       text: "Are you sure you want to logout?",
@@ -51,16 +60,13 @@ function Navbar({ setIsOpen, isOpen }) {
       showConfirmButton: false,
     });
 
-    setTimeout(() => {
-      navigate("/");
-    }, 1200);
+    setTimeout(() => navigate("/"), 1200);
   };
 
   return (
     <nav className="app-navbar">
 
       <div className="d-flex align-items-center gap-3">
-
         <button
           className="navbar-toggle"
           onClick={() => setIsOpen(!isOpen)}
@@ -68,9 +74,7 @@ function Navbar({ setIsOpen, isOpen }) {
         >
           <FaBars />
         </button>
-
         <span className="navbar-page-title">{title}</span>
-
       </div>
 
       <div className="position-relative">
@@ -78,24 +82,37 @@ function Navbar({ setIsOpen, isOpen }) {
         <div
           className="navbar-user"
           onClick={() => setShowProfile(!showProfile)}
-          style={{ cursor: "pointer" }}
         >
-          <FaUserCircle size={30} />
+          {user?.profileImage ? (
+            <img
+              src={`http://localhost:5000/${user.profileImage}`}
+              alt=""
+              className="navbar-avatar-img"
+            />
+          ) : (
+            <FaUserCircle size={30} />
+          )}
         </div>
 
         {showProfile && (
-
           <div className="profile-dropdown shadow">
 
-            <div className="p-3">
+            <div className="p-3 d-flex align-items-center gap-3">
 
-              <h6 className="mb-1">
-                {user?.name}
-              </h6>
+              {user?.profileImage ? (
+                <img
+                  src={`http://localhost:5000/${user.profileImage}`}
+                  alt=""
+                  className="dropdown-avatar-img"
+                />
+              ) : (
+                <FaUserCircle size={38} className="text-secondary" />
+              )}
 
-              <small className="text-muted">
-                {user?.email}
-              </small>
+              <div>
+                <h6 className="mb-1">{user?.name}</h6>
+                <small className="text-muted">{user?.email}</small>
+              </div>
 
             </div>
 
@@ -103,7 +120,10 @@ function Navbar({ setIsOpen, isOpen }) {
 
             <button
               className="dropdown-item d-flex align-items-center gap-2"
-              onClick={() => navigate("/profile")}
+              onClick={() => {
+                setShowProfile(false);
+                navigate("/profile");
+              }}
             >
               <FaUser />
               My Profile
@@ -117,7 +137,6 @@ function Navbar({ setIsOpen, isOpen }) {
             </button>
 
           </div>
-
         )}
       </div>
 
